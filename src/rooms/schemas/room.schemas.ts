@@ -9,11 +9,13 @@ export class Room {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true })
-  seats: number;
-
   @Prop()
   type: string;
+  
+  @Prop({ type: [Object] })
+  seats: { _id: string, price: number, status: string }[];
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Cinema' })
 
   @Prop({ type: Object })
   cinema: {
