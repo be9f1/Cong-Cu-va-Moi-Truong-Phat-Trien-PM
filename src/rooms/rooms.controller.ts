@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Res, Put } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/room.dto';
 import { Public, ResponseMessage, User } from 'src/decorator/customize';
@@ -22,6 +22,19 @@ export class RoomsController {
   update(@Param('id') id: string, @Body() updateRoomDto: CreateRoomDto,
     @User() user: IUser) {
     return this.roomsService.update(id, updateRoomDto, user);
+  }
+
+  @Put(':id/slect/')
+  selectSteat(
+    @Param('id') id: string, 
+    @Body() seats: 
+      {
+        id: string,
+        status: string
+      }[],
+    @User() user: IUser
+  ) {
+    return this.roomsService.selectSteat(id, seats, user);
   }
 
   @Delete(':id')
