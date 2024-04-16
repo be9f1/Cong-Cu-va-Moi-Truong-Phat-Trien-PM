@@ -15,6 +15,7 @@ import { TicketsModule } from './tickets/tickets.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { DatabasesModule } from './databases/databases.module';
+import { ShowtimesModule } from './showtimes/showtimes.module';
 
 
 @Module({
@@ -45,7 +46,8 @@ import { DatabasesModule } from './databases/databases.module';
     TicketsModule,
     PermissionsModule,
     RolesModule,
-    DatabasesModule
+    DatabasesModule,
+    ShowtimesModule
   ],
   controllers: [AppController],
   providers: [AppService,

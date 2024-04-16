@@ -2,12 +2,12 @@ import { Body, Inject, Injectable } from '@nestjs/common';
 import { CreateFilmDto, UpdateFilmDto } from './dto/film.dto';
 import { Film, FilmDocument } from './schemas/film.schemas';
 import { InjectModel } from '@nestjs/mongoose';
-import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { IUser } from 'src/users/users.interface';
 import { GenresService } from 'src/genres/genres.service';
 import aqp from 'api-query-params';
 import * as _ from 'lodash';
 import mongoose from 'mongoose';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 
 @Injectable()
 export class FilmsService {
@@ -101,7 +101,7 @@ export class FilmsService {
     const result = await this.filmModel.find(filter)
       .skip(offset)
       .limit(defaultLimit)
-      .sort(sort )
+      .sort(sort as unknown as string )
       .populate(population)
       .exec();
 

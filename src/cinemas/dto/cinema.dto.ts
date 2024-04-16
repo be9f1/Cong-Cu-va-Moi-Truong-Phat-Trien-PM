@@ -18,8 +18,13 @@ export class CreateCinemaDto {
 }
 
 export class UpdateCinemaDto {
-@IsNotEmpty({ message: 'id không được để trống', })
-_id: string;
+  name: string;
+
+  address: string;
+
+  description: string;
+
+  // logo: string;
 }
 
 export class CinemasPageOptionsDto extends PageOptionsDto {

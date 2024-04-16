@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common';
 import { CinemasService } from './cinemas.service';
-import { CinemasPageOptionsDto, CreateCinemaDto } from './dto/cinema.dto';
+import { CinemasPageOptionsDto, CreateCinemaDto, UpdateCinemaDto } from './dto/cinema.dto';
 import { Public, ResponseMessage, User } from 'src/decorator/customize';
 import { IUser } from 'src/users/users.interface';
 
@@ -18,8 +18,8 @@ export class CinemasController {
       );
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCinemaDto: CreateCinemaDto,
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateCinemaDto: UpdateCinemaDto,
   @User() user : IUser) {
     return this.cinemasService.update(id, updateCinemaDto,user);
   }

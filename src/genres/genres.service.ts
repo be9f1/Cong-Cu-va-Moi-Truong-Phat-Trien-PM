@@ -87,7 +87,7 @@ export class GenresService {
     const result = await this.genreModel.find(filter)
       .skip(offset)
       .limit(defaultLimit)
-      .sort(sort )
+      .sort(sort as unknown as string )
       .populate(population)
       .exec();
 
