@@ -122,105 +122,95 @@ const ViewUpsertRoom = (props: any) => {
     }
 
     return (
-        <div className={styles["upsert-room-container"]}>
-            <div className={styles["title"]}>
-                <Breadcrumb
-                    separator=">"
-                    items={[
-                        {
-                            title: <Link to="/admin/room">Manage Room</Link>,
-                        },
-                        {
-                            title: 'Upsert Room',
-                        },
-                    ]}
-                />
-            </div>
-            <div >
-
-                <ConfigProvider locale={enUS}>
-                    <ProForm
-                        form={form}
-                        onFinish={onFinish}
-                        submitter={
-                            {
-                                searchConfig: {
-                                    resetText: "Hủy",
-                                    submitText: <>{dataUpdate?._id ? "Cập nhật Room" : "Tạo mới Room"}</>
-                                },
-                                onReset: () => navigate('/admin/room'),
-                                render: (_: any, dom: any) => <FooterToolbar>{dom}</FooterToolbar>,
-                                submitButtonProps: {
-                                    icon: <CheckSquareOutlined />
-                                },
-                            }
-                        }
-                    >
-                        <Row gutter={[20, 20]}>
-                            <Col span={24} md={12}>
-                                <ProFormText
-                                    label="Tên Room"
-                                    name="name"
-                                    rules={[
-                                        { required: true, message: 'Vui lòng không bỏ trống' },
-                                    ]}
-                                    placeholder="Nhập tên Room"
-                                />
-                            </Col>
-                            <Col span={24} md={12}>
-                                <ProFormText
-                                    label="Loại phòng"
-                                    name="type"
-                                    rules={[
-                                        { required: true, message: 'Vui lòng không bỏ trống' },
-                                    ]}
-                                    placeholder="Nhập loại phòng"
-                                />
-                            </Col>
-                            <Col span={24} md={12}>
-                                <ProFormText
-                                    label="Số ghế"
-                                    name="seats"
-                                    rules={[
-                                        { required: true, message: 'Vui lòng không bỏ trống' },
-                                    ]}
-                                    placeholder="Nhập số ghế"
-                                />
-                            </Col>
-
-                            <Col lg={12} md={12} sm={24} xs={24}>
-                                <ProForm.Item
-                                    name="cinema"
-                                    label="Thuộc rạp chiếu"
-                                    rules={[{ required: true, message: 'Vui lòng chọn rạp chiếu!' }]}
-                                >
-                                    <DebounceSelect
-                                        allowClear
-                                        showSearch
-                                        defaultValue={cinemas}
-                                        value={cinemas}
-                                        placeholder="Chọn rạp chiếu"
-                                        fetchOptions={fetchCinemaList}
-                                        onChange={(newValue: any) => {
-                                            if (newValue?.length === 0 || newValue?.length === 1) {
-                                                setCinemas(newValue as IFilmSelect[]);
-                                            }
-                                        }}
-                                        style={{ width: '100%' }}
-                                    />
-                                </ProForm.Item>
-
-                            </Col>
-
-                        </Row>
-
-                        <Divider />
-                    </ProForm>
-                </ConfigProvider>
-
-            </div>
+      <div className={styles["upsert-room-container"]}>
+        <div className={styles["title"]}>
+          <Breadcrumb
+            separator=">"
+            items={[
+              {
+                title: <Link to="/admin/room">Manage Room</Link>,
+              },
+              {
+                title: "Upsert Room",
+              },
+            ]}
+          />
         </div>
-    )
+        <div>
+          <ConfigProvider locale={enUS}>
+            <ProForm
+              form={form}
+              onFinish={onFinish}
+              submitter={{
+                searchConfig: {
+                  resetText: "Hủy",
+                  submitText: (
+                    <>{dataUpdate?._id ? "Cập nhật Room" : "Tạo mới Room"}</>
+                  ),
+                },
+                onReset: () => navigate("/admin/room"),
+                render: (_: any, dom: any) => (
+                  <FooterToolbar>{dom}</FooterToolbar>
+                ),
+                submitButtonProps: {
+                  icon: <CheckSquareOutlined />,
+                },
+              }}
+            >
+              <Row gutter={[20, 20]}>
+                <Col span={24} md={12}>
+                  <ProFormText
+                    label="Tên Room"
+                    name="name"
+                    rules={[
+                      { required: true, message: "Vui lòng không bỏ trống" },
+                    ]}
+                    placeholder="Nhập tên Room"
+                  />
+                </Col>
+                <Col span={24} md={12}>
+                  <ProFormText
+                    label="Loại phòng"
+                    name="type"
+                    rules={[
+                      { required: true, message: "Vui lòng không bỏ trống" },
+                    ]}
+                    placeholder="Nhập loại phòng"
+                  />
+                </Col>
+
+                <Col lg={12} md={12} sm={24} xs={24}>
+                  <ProForm.Item
+                    name="cinema"
+                    label="Thuộc rạp chiếu"
+                    rules={[
+                      { required: true, message: "Vui lòng chọn rạp chiếu!" },
+                    ]}
+                  >
+                    <DebounceSelect
+                      allowClear
+                      showSearch
+                      defaultValue={cinemas}
+                      value={cinemas}
+                      placeholder="Chọn rạp chiếu"
+                      fetchOptions={fetchCinemaList}
+                      onChange={(newValue: any) => {
+                        if (newValue?.length === 0 || newValue?.length === 1) {
+                          setCinemas(newValue as IFilmSelect[]);
+                        }
+                      }}
+                      style={{ width: "100%" }}
+                    />
+                  </ProForm.Item>
+                </Col>
+              </Row>
+
+              <Divider />
+            </ProForm>
+          </ConfigProvider>
+        </div>
+      </div>
+    );
 }
 
 export default ViewUpsertRoom;

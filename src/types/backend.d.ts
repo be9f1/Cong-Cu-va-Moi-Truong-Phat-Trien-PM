@@ -42,7 +42,7 @@ export interface IFilm {
     name: string;
     director?: string;
     logo: string;
-    time: string;
+    time: number;
     description: string;
     startDate: Date;
     endDate: Date;
@@ -93,6 +93,30 @@ export interface ICinema {
     createdAt?: string;
     updatedAt?: string;
     address: string;
+}
+
+export interface IShowtime {
+    _id?: string;
+    seats?: {
+        _id: string;
+        status: string;
+    }[];
+    room?: {
+        _id: string;
+        name: string;
+    }
+    film?: {
+        _id: string;
+        name: string;
+        time: number;
+    }
+    dateStart?: Date;
+    dateEnd?: Date;
+    createdBy?: string;
+    isDeleted?: boolean;
+    deletedAt?: boolean | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface IRoom {
