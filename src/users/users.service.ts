@@ -85,7 +85,7 @@ export class UsersService {
     const result = await this.userModel.find(filter)
       .skip(offset)
       .limit(defaultLimit)
-      .sort(sort )
+      .sort(sort as unknown as string )
       .populate(population)
       .exec();
 
@@ -155,6 +155,7 @@ export class UsersService {
     const { name, email, password, gender, address, age } = user;
     const hashPassword = this.getHashPassword(password);
     const isExist = await this.userModel.findOne({ email });
+    console.log("🚀 ~ UsersService ~ register ~ isExist:", isExist)
     if (isExist) {
       throw new BadRequestException("Email đã tồn tại");
     }
@@ -174,6 +175,7 @@ export class UsersService {
    const { name, email, password, age, gender, address, role } = createUserDto;
     const hashPassword = this.getHashPassword(password);
     const isExist = await this.userModel.findOne({ email });
+    console.log("🚀 ~ UsersService ~ create ~ isExist:", isExist)
     if (isExist) {
       throw new BadRequestException("Email đã tồn tại");
     }
@@ -206,6 +208,6 @@ export class UsersService {
       path: 'role',
       select: { name: 1 } 
     })
-}
+  }
 
 }

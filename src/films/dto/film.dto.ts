@@ -33,7 +33,7 @@ export class CreateFilmDto {
   description: String;
 
   @IsNotEmpty()
-  time: String;
+  time: number;
 
   @IsNotEmpty()
   logo: String;

@@ -1,26 +1,39 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import exp from 'constants';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { RoleTypeEnum } from 'src/common/enum';
+import { AbstractMongooseModel, BaseSchema } from 'src/common/common.mongoose';
 
-export type RoomDocument = HydratedDocument<Room>;
+@BaseSchema({
+  collection: 'showtimes',
+  strict: true
+})
 
 @Schema({ timestamps: true })
-export class Room {
-  @Prop({ required: true })
+export class Showtime extends AbstractMongooseModel{
+  
+  @Prop()
   name: string;
 
-  @Prop()
-  type: string;
-  
   @Prop({ type: [Object] })
   seats: { _id: string, price: number, status: string }[];
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Cinema' })
+  @Prop({type: Date})
+  dateStart: string;
+
+  @Prop({type: Date})
+  dateEnd: string;
 
   @Prop({ type: Object })
-  cinema: {
+  room: {
     _id: mongoose.Schema.Types.ObjectId,
     name: string,
+  }
+
+  @Prop({ type: Object })
+  film: {
+    _id: mongoose.Schema.Types.ObjectId,
+    name: string,
+    time: number,
   }
 
   @Prop({ type: Object })
@@ -54,4 +67,8 @@ export class Room {
   deleteAt: Date;
 }
 
-export const RoomSchema = SchemaFactory.createForClass(Room);
+export const ShowtimeSchema = SchemaFactory.createForClass(Showtime);
+
+ShowtimeSchema.loadClass(Showtime);
+
+export type ShowtimeDocument = Showtime & Document;

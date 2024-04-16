@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CinemasPageOptionsDto, CreateCinemaDto } from './dto/cinema.dto';
+import { CinemasPageOptionsDto, CreateCinemaDto, UpdateCinemaDto } from './dto/cinema.dto';
 import { Cinema, CinemaDocument } from './schemas/cinema.schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
@@ -24,7 +24,7 @@ export class CinemasService {
       })
   }
 
-  async update(id: string, upadteCinemaDto: CreateCinemaDto, user: IUser) {
+  async update(id: string, upadteCinemaDto: UpdateCinemaDto, user: IUser) {
 
     return await this.cinemaModel.updateOne(
       { _id: id },
@@ -88,7 +88,7 @@ export class CinemasService {
     const result = await this.cinemaModel.find(filter)
       .skip(offset)
       .limit(defaultLimit)
-      .sort(sort )
+      .sort(sort as unknown as string) // Fix: Cast 'sort' to string
       .populate(population)
       .exec();
 

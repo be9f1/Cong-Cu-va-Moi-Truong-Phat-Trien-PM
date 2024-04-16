@@ -15,6 +15,12 @@ export class Genre {
       email: string,
     }
 
+    @Prop({ type: Object })
+    film: {
+      _id: mongoose.Schema.Types.ObjectId,
+      name: string,
+    }
+
     @Prop({type: Object})
     updatedBy: {
       _id: mongoose.Schema.Types.ObjectId,

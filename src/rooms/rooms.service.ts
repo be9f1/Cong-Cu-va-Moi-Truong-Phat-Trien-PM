@@ -2,10 +2,10 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateRoomDto } from './dto/room.dto';
 import { Room, RoomDocument } from './schemas/room.schemas';
 import { InjectModel } from '@nestjs/mongoose';
-import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { IUser } from 'src/users/users.interface';
-import aqp from 'api-query-params';
 import mongoose from 'mongoose';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
+import aqp from 'api-query-params';
 
 @Injectable()
 export class RoomsService {
@@ -18,12 +18,16 @@ export class RoomsService {
     const {
       name,
       type,
-      seats,
       cinema,
 
     } = createRoomDto;
+    let newSeats = [
+      ...Array.from({ length: 20 }, (_, i) => ({ _id: `s${i + 1}`, price: 60000, status: 'READY' })),
+      ...Array.from({ length: 20 }, (_, i) => ({ _id: `s${i + 21}`, price: 70000, status: 'READY' })),
+      ...Array.from({ length: 10 }, (_, i) => ({ _id: `s${i + 41}`, price: 65000, status: 'READY' })),
+    ];
     let newRoom = await this.roomModel.create({
-      name, type, seats, cinema, createdBy: {
+      name, type, seats: newSeats, cinema, createdBy: {
         _id: user._id,
         email: user.email
       }
@@ -98,7 +102,7 @@ export class RoomsService {
     const result = await this.roomModel.find(filter)
       .skip(offset)
       .limit(defaultLimit)
-      .sort(sort)
+      .sort(sort as unknown as string)
       .populate(population)
       .exec();
 
@@ -135,4 +139,46 @@ export class RoomsService {
     return this.roomModel.softDelete({ _id: id });
   }
 
+  async selectSteat(id: string, seats:
+    {
+      id: string,
+      status: string
+    }[], user: IUser) {
+    return await this.roomModel.updateOne(
+      { _id: id },
+      {
+        ...seats,
+        updatedBy: {
+          _id: user._id,
+          email: user.email,
+        }
+      }
+    )
+  }
+
+  // async selectSteat(id: string, seatIds: string[]
+  // , ) :Promise<void>{
+  //   const room = await this.roomModel.findById(id);
+  //   if(room ){
+  //     room.seats.forEach(seat => {
+  //       if(seatIds.includes(seat._id)){
+  //         seat.status = 'SLECTED';
+  //       }
+  //     });
+  //     await room.save();
+  //   }else {
+  //     throw new Error('Room not found');
+  //   }
+
+    // return await this.roomModel.updateOne(
+    //   { _id: id },
+    //   {
+    //     seats: updatedSeats,
+    //     updatedBy: {
+    //       _id: user._id,
+    //       email: user.email,
+    //     }
+    //   }
+    // );
+  // }
 }
