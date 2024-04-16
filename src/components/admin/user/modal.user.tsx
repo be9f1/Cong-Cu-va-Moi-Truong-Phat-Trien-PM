@@ -20,10 +20,22 @@ export interface IFilmSelect {
     key?: string;
 }
 
-export interface ICinemaSelect {
-    label: string;
-    key?: string;
+export interface IFilmSelect1 {
+  label: string;
+  value: number;
+  key?: string;
 }
+
+export interface ICinemaSelect {
+  label: string;
+  key?: string;
+}
+
+export interface IRoomSelect {
+  label: string;
+  key?: string;
+}
+
 
 const ModalUser = (props: IProps) => {
     const { openModal, setOpenModal, reloadTable, dataInit, setDataInit } = props;

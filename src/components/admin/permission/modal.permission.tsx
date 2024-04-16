@@ -68,87 +68,87 @@ const ModalPermission = (props: IProps) => {
     }
 
     return (
-        <>
-            <ModalForm
-                title={<>{dataInit?._id ? "Cập nhật Permission" : "Tạo mới Permission"}</>}
-                open={openModal}
-                modalProps={{
-                    onCancel: () => { handleReset() },
-                    afterClose: () => handleReset(),
-                    destroyOnClose: true,
-                    width: isMobile ? "100%" : 900,
-                    keyboard: false,
-                    maskClosable: false,
-                    okText: <>{dataInit?._id ? "Cập nhật" : "Tạo mới"}</>,
-                    cancelText: "Hủy"
+      <>
+        <ModalForm
+          title={
+            <>{dataInit?._id ? "Cập nhật Permission" : "Tạo mới Permission"}</>
+          }
+          open={openModal}
+          modalProps={{
+            onCancel: () => {
+              handleReset();
+            },
+            afterClose: () => handleReset(),
+            destroyOnClose: true,
+            width: isMobile ? "100%" : 900,
+            keyboard: false,
+            maskClosable: false,
+            okText: <>{dataInit?._id ? "Cập nhật" : "Tạo mới"}</>,
+            cancelText: "Hủy",
+          }}
+          scrollToFirstError={true}
+          preserve={false}
+          form={form}
+          onFinish={submitPermission}
+          initialValues={dataInit?._id ? dataInit : {}}
+        >
+          <Row gutter={16}>
+            <Col lg={12} md={12} sm={24} xs={24}>
+              <ProFormText
+                label="Tên Permission"
+                name="name"
+                rules={[{ required: true, message: "Vui lòng không bỏ trống" }]}
+                placeholder="Nhập name"
+              />
+            </Col>
+            <Col lg={12} md={12} sm={24} xs={24}>
+              <ProFormText
+                label="API Path"
+                name="apiPath"
+                rules={[{ required: true, message: "Vui lòng không bỏ trống" }]}
+                placeholder="Nhập path"
+              />
+            </Col>
+
+            <Col lg={12} md={12} sm={24} xs={24}>
+              <ProFormSelect
+                name="method"
+                label="Method"
+                valueEnum={{
+                  GET: "GET",
+                  POST: "POST",
+                  PUT: "PUT",
+                  PATCH: "PATCH",
+                  DELETE: "DELETE",
                 }}
-                scrollToFirstError={true}
-                preserve={false}
-                form={form}
-                onFinish={submitPermission}
-                initialValues={dataInit?._id ? dataInit : {}}
-            >
-                <Row gutter={16}>
-                    <Col lg={12} md={12} sm={24} xs={24}>
-                        <ProFormText
-                            label="Tên Permission"
-                            name="name"
-                            rules={[
-                                { required: true, message: 'Vui lòng không bỏ trống' },
-                            ]}
-                            placeholder="Nhập name"
-                        />
-                    </Col>
-                    <Col lg={12} md={12} sm={24} xs={24}>
-                        <ProFormText
-                            label="API Path"
-                            name="apiPath"
-                            rules={[
-                                { required: true, message: 'Vui lòng không bỏ trống' },
-                            ]}
-                            placeholder="Nhập path"
-                        />
-                    </Col>
-
-                    <Col lg={12} md={12} sm={24} xs={24}>
-                        <ProFormSelect
-                            name="method"
-                            label="Method"
-                            valueEnum={{
-                                GET: 'GET',
-                                POST: 'POST',
-                                PUT: 'PUT',
-                                PATCH: 'PATCH',
-                                DELETE: 'DELETE',
-                            }}
-                            placeholder="Please select a method"
-                            rules={[{ required: true, message: 'Vui lòng chọn method!' }]}
-                        />
-                    </Col>
-                    <Col lg={12} md={12} sm={24} xs={24}>
-                        <ProFormSelect
-                            name="module"
-                            label="Thuộc Module"
-                            valueEnum={{
-                                AUTH: 'AUTH',
-                                CINEMAS: 'CINEMAS',
-                                FILES: 'FILES',
-                                FILMS: 'FILMS',
-                                ROOMS: 'ROOMS',
-                                PERMISSIONS: 'PERMISSIONS',
-                                TICKET: 'TICKET',
-                                ROLES: 'ROLES',
-                                USERS: 'USERS'
-                            }}
-                            placeholder="Please select a module"
-                            rules={[{ required: true, message: 'Vui lòng chọn module!' }]}
-                        />
-                    </Col>
-
-                </Row>
-            </ModalForm>
-        </>
-    )
+                placeholder="Please select a method"
+                rules={[{ required: true, message: "Vui lòng chọn method!" }]}
+              />
+            </Col>
+            <Col lg={12} md={12} sm={24} xs={24}>
+              <ProFormSelect
+                name="module"
+                label="Thuộc Module"
+                valueEnum={{
+                  AUTH: "AUTH",
+                  CINEMAS: "CINEMAS",
+                  FILES: "FILES",
+                  FILMS: "FILMS",
+                  ROOMS: "ROOMS",
+                  SHOWTIMES: "SHOWTIMES",
+                  PERMISSIONS: "PERMISSIONS",
+                  TICKET: "TICKET",
+                  ROLES: "ROLES",
+                  USERS: "USERS",
+                }}
+                placeholder="Please select a module"
+                rules={[{ required: true, message: "Vui lòng chọn module!" }]}
+              />
+            </Col>
+          </Row>
+        </ModalForm>
+      </>
+    );
 }
 
 export default ModalPermission;

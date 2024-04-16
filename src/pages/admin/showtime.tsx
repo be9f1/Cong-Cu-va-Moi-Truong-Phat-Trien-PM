@@ -1,45 +1,57 @@
 import DataTable from "@/components/client/data-table";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { IRoom } from "@/types/backend";
+import { IShowtime } from "@/types/backend";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { ActionType, ProColumns, ProFormSelect } from '@ant-design/pro-components';
-import { Button, Popconfirm, Select, Space, Tag, message, notification } from "antd";
-import { useState, useRef } from 'react';
-import dayjs from 'dayjs';
-import { callDeleteRoom } from "@/config/api";
-import queryString from 'query-string';
+import {
+  ActionType,
+  ProColumns,
+  ProFormSelect,
+} from "@ant-design/pro-components";
+import {
+  Button,
+  Popconfirm,
+  Select,
+  Space,
+  Tag,
+  message,
+  notification,
+} from "antd";
+import { useState, useRef } from "react";
+import dayjs from "dayjs";
+import { callDeleteShowtime } from "@/config/api";
+import queryString from "query-string";
 import { useNavigate } from "react-router-dom";
-import { fetchRoom } from "@/redux/slice/roomSlide";
+import { fetchShowtime } from "@/redux/slice/showtimeSlide";
 
-const RoomPage = () => {
+const ShowtimePage = () => {
   const tableRef = useRef<ActionType>();
 
-  const isFetching = useAppSelector(state => state.room.isFetching);
-  const meta = useAppSelector(state => state.room.meta);
-  const rooms = useAppSelector(state => state.room.result);
+  const isFetching = useAppSelector((state) => state.showtime.isFetching);
+  const meta = useAppSelector((state) => state.showtime.meta);
+  const showtimes = useAppSelector((state) => state.showtime.result);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleDeleteRoom = async (_id: string | undefined) => {
+  const handleDeleteShowtime = async (_id: string | undefined) => {
     if (_id) {
-      const res = await callDeleteRoom(_id);
+      const res = await callDeleteShowtime(_id);
       if (res && res.data) {
-        message.success('Xóa Room thành công');
+        message.success("Xóa Showtime thành công");
         reloadTable();
       } else {
         notification.error({
-          message: 'Có lỗi xảy ra',
-          description: res.message
+          message: "Có lỗi xảy ra",
+          description: res.message,
         });
       }
     }
-  }
+  };
 
   const reloadTable = () => {
     tableRef?.current?.reload();
-  }
+  };
 
-  const columns: ProColumns<IRoom>[] = [
+  const columns: ProColumns<IShowtime>[] = [
     {
       title: "STT",
       key: "index",
@@ -51,18 +63,21 @@ const RoomPage = () => {
       hideInSearch: true,
     },
     {
-      title: "Tên Room",
-      dataIndex: "name",
+      title: "Showtime",
+      dataIndex: "_id",
       sorter: true,
     },
     {
-      title: "Loại phòng",
-      dataIndex: "type",
+      title: "Phim chiếu",
+      dataIndex: ["film", "name"],
     },
-
     {
-      title: "Rạp chiếu",
-      dataIndex: ["cinema", "name"],
+      title: "Phòng chiếu",
+      dataIndex: ["room", "name"],
+    },
+    {
+      title: "Ngày giờ chiếu",
+      dataIndex: "dateStart",
     },
     {
       title: "CreatedAt",
@@ -97,15 +112,15 @@ const RoomPage = () => {
             }}
             type=""
             onClick={() => {
-              navigate(`/admin/room/upsert?id=${entity._id}`);
+              navigate(`/admin/showtime/upsert?id=${entity._id}`);
             }}
           />
 
           <Popconfirm
             placement="leftTop"
-            title={"Xác nhận xóa room"}
-            description={"Bạn có chắc chắn muốn xóa room này ?"}
-            onConfirm={() => handleDeleteRoom(entity._id)}
+            title={"Xác nhận xóa showtime"}
+            description={"Bạn có chắc chắn muốn xóa showtime này ?"}
+            onConfirm={() => handleDeleteShowtime(entity._id)}
             okText="Xác nhận"
             cancelText="Hủy"
           >
@@ -135,16 +150,18 @@ const RoomPage = () => {
 
     let sortBy = "";
     if (sort && sort.name) {
-      sortBy = sort.name === 'ascend' ? "sort=name" : "sort=-name";
+      sortBy = sort.name === "ascend" ? "sort=name" : "sort=-name";
     }
     if (sort && sort.address) {
-      sortBy = sort.address === 'ascend' ? "sort=address" : "sort=-address";
+      sortBy = sort.address === "ascend" ? "sort=address" : "sort=-address";
     }
     if (sort && sort.createdAt) {
-      sortBy = sort.createdAt === 'ascend' ? "sort=createdAt" : "sort=-createdAt";
+      sortBy =
+        sort.createdAt === "ascend" ? "sort=createdAt" : "sort=-createdAt";
     }
     if (sort && sort.updatedAt) {
-      sortBy = sort.updatedAt === 'ascend' ? "sort=updatedAt" : "sort=-updatedAt";
+      sortBy =
+        sort.updatedAt === "ascend" ? "sort=updatedAt" : "sort=-updatedAt";
     }
 
     //mặc định sort theo updatedAt
@@ -155,38 +172,43 @@ const RoomPage = () => {
     }
 
     return temp;
-  }
+  };
 
   return (
     <div>
-      <DataTable<IRoom>
+      <DataTable<IShowtime>
         actionRef={tableRef}
-        headerTitle="Danh sách Rooms"
+        headerTitle="Danh sách Showtimes"
         rowKey="_id"
         loading={isFetching}
         columns={columns}
-        dataSource={rooms}
+        dataSource={showtimes}
         request={async (params, sort, filter): Promise<any> => {
           const query = buildQuery(params, sort, filter);
-          dispatch(fetchRoom({ query }))
+          dispatch(fetchShowtime({ query }));
         }}
         scroll={{ x: true }}
-        pagination={
-          {
-            current: meta.current,
-            pageSize: meta.pageSize,
-            showSizeChanger: true,
-            total: meta.total,
-            showTotal: (total, range) => { return (<div> {range[0]}-{range[1]} trên {total} rows</div>) }
-          }
-        }
+        pagination={{
+          current: meta.current,
+          pageSize: meta.pageSize,
+          showSizeChanger: true,
+          total: meta.total,
+          showTotal: (total, range) => {
+            return (
+              <div>
+                {" "}
+                {range[0]}-{range[1]} trên {total} rows
+              </div>
+            );
+          },
+        }}
         rowSelection={false}
         toolBarRender={(_action, _rows): any => {
           return (
             <Button
               icon={<PlusOutlined />}
               type="primary"
-              onClick={() => navigate('upsert')}
+              onClick={() => navigate("upsert")}
             >
               Thêm mới
             </Button>
@@ -194,7 +216,7 @@ const RoomPage = () => {
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default RoomPage;
+export default ShowtimePage;
