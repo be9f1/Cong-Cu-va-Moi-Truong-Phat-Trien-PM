@@ -41,62 +41,51 @@ const RoomPage = () => {
 
   const columns: ProColumns<IRoom>[] = [
     {
-      title: 'STT',
-      key: 'index',
+      title: "STT",
+      key: "index",
       width: 50,
       align: "center",
       render: (text, record, index) => {
-        return (
-          <>
-            {(index + 1) + (meta.current - 1) * (meta.pageSize)}
-          </>)
+        return <>{index + 1 + (meta.current - 1) * meta.pageSize}</>;
       },
       hideInSearch: true,
     },
     {
-      title: 'Tên Room',
-      dataIndex: 'name',
+      title: "Tên Room",
+      dataIndex: "name",
       sorter: true,
     },
     {
-      title: 'Loại phòng',
-      dataIndex: 'type',
+      title: "Loại phòng",
+      dataIndex: "type",
     },
-    {
-      title: 'Số ghế',
-      dataIndex: 'seats',
-    },
-    {
-      title: 'Rạp chiếu',
-      dataIndex: ['cinema', 'name'],
-    },
-    {
-      title: 'CreatedAt',
-      dataIndex: 'createdAt',
-      width: 200,
-      sorter: true,
-      render: (text, record, index, action) => {
-        return (
-          <>{dayjs(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}</>
-        )
-      },
-      hideInSearch: true,
-    },
-    {
-      title: 'UpdatedAt',
-      dataIndex: 'updatedAt',
-      width: 200,
-      sorter: true,
-      render: (text, record, index, action) => {
-        return (
-          <>{dayjs(record.updatedAt).format('DD-MM-YYYY HH:mm:ss')}</>
-        )
-      },
-      hideInSearch: true,
-    },
-    {
 
-      title: 'Actions',
+    {
+      title: "Rạp chiếu",
+      dataIndex: ["cinema", "name"],
+    },
+    {
+      title: "CreatedAt",
+      dataIndex: "createdAt",
+      width: 200,
+      sorter: true,
+      render: (text, record, index, action) => {
+        return <>{dayjs(record.createdAt).format("DD-MM-YYYY HH:mm:ss")}</>;
+      },
+      hideInSearch: true,
+    },
+    {
+      title: "UpdatedAt",
+      dataIndex: "updatedAt",
+      width: 200,
+      sorter: true,
+      render: (text, record, index, action) => {
+        return <>{dayjs(record.updatedAt).format("DD-MM-YYYY HH:mm:ss")}</>;
+      },
+      hideInSearch: true,
+    },
+    {
+      title: "Actions",
       hideInSearch: true,
       width: 50,
       render: (_value, entity, _index, _action) => (
@@ -104,11 +93,11 @@ const RoomPage = () => {
           <EditOutlined
             style={{
               fontSize: 20,
-              color: '#ffa500',
+              color: "#ffa500",
             }}
             type=""
             onClick={() => {
-              navigate(`/admin/room/upsert?id=${entity._id}`)
+              navigate(`/admin/room/upsert?id=${entity._id}`);
             }}
           />
 
@@ -124,14 +113,13 @@ const RoomPage = () => {
               <DeleteOutlined
                 style={{
                   fontSize: 20,
-                  color: '#ff4d4f',
+                  color: "#ff4d4f",
                 }}
               />
             </span>
           </Popconfirm>
         </Space>
       ),
-
     },
   ];
 
