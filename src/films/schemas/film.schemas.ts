@@ -22,7 +22,7 @@ export class Film {
   description: String;
 
   @Prop()
-  time: String;
+  time: number;
 
   @Prop()
   logo: String;

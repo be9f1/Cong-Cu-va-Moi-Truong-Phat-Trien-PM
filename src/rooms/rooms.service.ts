@@ -21,13 +21,9 @@ export class RoomsService {
       cinema,
 
     } = createRoomDto;
-    let newSeats = [
-      ...Array.from({ length: 20 }, (_, i) => ({ _id: `s${i + 1}`, price: 60000, status: 'READY' })),
-      ...Array.from({ length: 20 }, (_, i) => ({ _id: `s${i + 21}`, price: 70000, status: 'READY' })),
-      ...Array.from({ length: 10 }, (_, i) => ({ _id: `s${i + 41}`, price: 65000, status: 'READY' })),
-    ];
+    
     let newRoom = await this.roomModel.create({
-      name, type, seats: newSeats, cinema, createdBy: {
+      name, type, cinema, createdBy: {
         _id: user._id,
         email: user.email
       }
