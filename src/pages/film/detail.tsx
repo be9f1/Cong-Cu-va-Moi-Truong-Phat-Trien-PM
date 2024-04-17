@@ -36,62 +36,74 @@ const ClientFilmDetailPage = (props: any) => {
     }, [id]);
 
     return (
-        <div className={`${styles["container"]} ${styles["detail-film-section"]}`}>
-            {isLoading ?
-                <Skeleton />
-                :
-                <Row gutter={[20, 20]}>
-                    {filmDetail && filmDetail._id &&
-                        <>
-                            <Col span={24} md={16}>
-                                <div className={styles["header"]}>
-                                    {filmDetail.name}
-                                </div>
-                                <div>
-                                    <button className={styles["btn-apply"]}>Apply Now</button>
-                                </div>
-                                <Divider />
-                                <div className={styles["genres"]}>
-                                    {filmDetail?.genres?.map((item, index) => {
-                                        return (
-                                            <Tag key={`${index}-key`} color="gold" >
-                                                {item}
-                                            </Tag>
-                                        )
-                                    })}
-                                </div>
-                                <div className={styles["time"]}>
-                                    <DollarOutlined />
-                                    <span>&nbsp;{(filmDetail.time + "")?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} đ</span>
-                                </div>
-                                {/* <div className={styles["location"]}>
+      <div
+        className={`${styles["container"]} ${styles["detail-film-section"]}`}
+      >
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          <Row gutter={[20, 20]}>
+            {filmDetail && filmDetail._id && (
+              <>
+                <Col span={24} md={16}>
+                  <div className={styles["header"]}>
+                    Phim: {filmDetail.name}
+                  </div>
+                  <div>
+                    <button className={styles["btn-apply"]}>Mua vé</button>
+                  </div>
+                  <Divider />
+                  <div className={styles["genres"]}>
+                    {" "}
+                    Thể loại:
+                    {filmDetail?.genres?.map((item, index) => {
+                      return (
+                        <Tag key={`${index}-key`} color="gold">
+                          {item}
+                        </Tag>
+                      );
+                    })}
+                  </div>
+                  <div className={styles["time"]}>
+                    <DollarOutlined />
+                    <span>
+                      &nbsp;
+                      {(filmDetail.time + "")?.replace(
+                        /\B(?=(\d{3})+(?!\d))/g,
+                        ","
+                      )}{" "}
+                      đ
+                    </span>
+                  </div>
+                  {/* <div className={styles["location"]}>
                                     <EnvironmentOutlined style={{ color: '#58aaab' }} />&nbsp;{getLocationName(filmDetail)}
                                 </div> */}
-                                <div>
-                                    <HistoryOutlined /> {dayjs(filmDetail.updatedAt).fromNow()}
-                                </div>
-                                <Divider />
-                                {parse(filmDetail.description)}
-                            </Col>
+                  <div>
+                    <HistoryOutlined /> {filmDetail.time} phút
+                  </div>
+                  <Divider />
+                  {parse(filmDetail.description)}
+                </Col>
 
-                            <Col span={24} md={8}>
-                                <div className={styles["film"]}>
-                                    <div>
-                                        <img
-                                            width={200}
-                                            height={200}
-                                            alt="detail-film"
-                                            src={`${import.meta.env.VITE_BACKEND_URL}/images/film/${filmDetail.logo}`}
-                                        />
-                                    </div>
-
-                                </div>
-                            </Col>
-                        </>
-                    }
-                </Row>
-            }
-        </div>
-    )
+                <Col span={24} md={8}>
+                  <div className={styles["film"]}>
+                    <div>
+                      <img
+                        width={200}
+                        height={200}
+                        alt="detail-film"
+                        src={`${import.meta.env.VITE_BACKEND_URL}/images/film/${
+                          filmDetail.logo
+                        }`}
+                      />
+                    </div>
+                  </div>
+                </Col>
+              </>
+            )}
+          </Row>
+        )}
+      </div>
+    );
 }
 export default ClientFilmDetailPage;

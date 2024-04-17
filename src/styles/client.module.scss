@@ -319,3 +319,34 @@
     justify-content: center;
     align-items: center;
 }
+
+.seats-list {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 10px; /* Updated: Set the horizontal gap between seats to 10px */
+    margin: 60px 0;
+    margin-top: 40px;
+    position: relative;
+}
+.seats-list .seat {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border: 1px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.seats-list .seat.selected {
+  background-color: rgb(8, 156, 255);
+}
+
+.seats-list .seat.ready {
+    background-color: white;
+  }
+  
+  .seats-list .seat.unready {
+    background-color: gray;
+    cursor: not-allowed;
+  }
