@@ -22,6 +22,17 @@ class Film {
   time: number;
 }
 
+class Seat {
+  @IsNotEmpty()
+  _id: string;
+
+  @IsNotEmpty()
+  status: string;
+
+  @IsNotEmpty()
+  price: number;
+}
+
 export class CreateShowtimeDto {
   @IsNotEmpty()
   dateStart: string;
@@ -34,8 +45,8 @@ export class CreateShowtimeDto {
 }
 
 export class UpdateShowtimeDto {
-  @IsNotEmpty({ message: 'id không được để trống', })
-  _id: string;
+  @IsNotEmpty()
+  seats: Seat[];
 }
 
 export class UpdateSteatsDto {

@@ -11,9 +11,6 @@ export class Room {
 
   @Prop()
   type: string;
-  
-  @Prop({ type: [Object] })
-  seats: { _id: string, price: number, status: string }[];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Cinema' })
 

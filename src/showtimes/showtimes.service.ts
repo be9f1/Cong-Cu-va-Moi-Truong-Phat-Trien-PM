@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Showtime, ShowtimeDocument } from "./schemas/showtime.schemas";
-import { CreateShowtimeDto, ShowtimeOptionsDto } from "./dto/showtime.dto";
+import { CreateShowtimeDto, ShowtimeOptionsDto, UpdateShowtimeDto } from "./dto/showtime.dto";
 import { IUser } from "src/users/users.interface";
 import { Order } from "src/common/enum";
 import * as _ from 'lodash';
@@ -26,11 +26,6 @@ export class ShowtimesService extends CommonService<Showtime> {
       ...Array.from({ length: 20 }, (_, i) => ({ _id: `s${i + 21}`, price: 70000, status: 'READY' })),
       ...Array.from({ length: 10 }, (_, i) => ({ _id: `s${i + 41}`, price: 65000, status: 'READY' })),
     ];
-    // const isExist = await this.showtimeModel.findOne({ dateStart });
-    // console.log("🚀 ~ ShowtimesService ~ create ~ isExist:", isExist)
-    // if (isExist.dateStart) {
-    //   throw new BadRequestException("Trùng giờ chiếu");
-    // }
     const endDate = new Date(dateStart);
     endDate.setMinutes(endDate.getMinutes() + (film.time + 15));
     let newShowtime = await this.showtimeModel.create({
@@ -54,7 +49,7 @@ export class ShowtimesService extends CommonService<Showtime> {
     }
   }
 
-  async update(id: string, upadteShowtimeDto: CreateShowtimeDto, user: IUser) {
+  async update(id: string, upadteShowtimeDto: UpdateShowtimeDto, user: IUser) {
 
     return await this.showtimeModel.updateOne(
       { _id: id },
@@ -66,78 +61,6 @@ export class ShowtimesService extends CommonService<Showtime> {
         }
       })
   }
-
-  // async findAll(pageOptionsDto: ShowtimesPageOptionsDto) {
-  //   const { 
-  //     orderField = 'createdAt',
-  //     order = Order.DESC,
-  //     page,
-  //     limit,
-  //     q,
-  //   } = pageOptionsDto;
-  //   let conditions: Record<string, any> = q
-  //     ? {
-  //       $or: [{ class: Number(q) }, { subject: { $regex: q, $options: 'i' } }]
-  //     }
-  //     : {};
-  //     const options = {
-  //       skip: (page - 1) * limit,
-  //       limit: limit
-  //     };
-  //     conditions = { ...conditions };
-  //     const sort = orderField
-  //       ? {
-  //         [orderField]: order === Order.DESC ? -1 : 1
-  //       }
-  //       : {
-  //         createdAt: -1
-  //       };
-
-  //     console.log(sort);
-  //     const [total, items] = await Promise.all([
-  //       this.showtimeModel.countDocuments(conditions),
-  //       this.showtimeModel.find(conditions, null, options).sort(sort).select("-password") 
-  //     ]);
-  //     return new Pagination<Partial<Showtime>>(
-  //       items.map((item) => item.toJSON()),
-  //       total
-  //     );
-  // }
-
-  // async findAll(currentPage: number, limit: number, qs: string) {
-  //   const { filter, sort, projection, population } = aqp(qs);
-  //   delete filter.current;
-  //   delete filter.pageSize;
-
-  //   let offset = (+currentPage - 1) * (+limit);
-  //   let defaultLimit = +limit ? +limit : 10;
-
-  //   const totalItems = (await this.showtimeModel.find(filter)).length;
-  //   const totalPages = Math.ceil(totalItems / defaultLimit);
-
-  //   const result = await this.showtimeModel.find(filter)
-  //     .skip(offset)
-  //     .limit(defaultLimit)
-  //     .sort(sort as unknown as string)
-  //     .populate(population)
-  //     .exec();
-
-  //   return {
-  //     meta: {
-  //       current: currentPage, //trang hiện tại
-  //       pageSize: limit, //số lượng bản ghi đã lấy
-  //       pages: totalPages, //tổng số trang với điều kiện query
-  //       total: totalItems // tổng số phần tử (số bản ghi)
-  //     },
-  //     result //kết quả query
-  //   }
-  // }
-
-  // async findOne(id: string) {
-  //   if (!mongoose.Types.ObjectId.isValid(id))
-  //     return new BadRequestException(`not found showtime with id=${id}`);
-  //   return await this.showtimeModel.findById(id);
-  // }
 
   async findByRoomId(roomId: string) {
     return await this.showtimeModel.find({ "room._id": roomId }).exec();
@@ -264,7 +187,6 @@ export class ShowtimesService extends CommonService<Showtime> {
       orderField,
       startDate,
       endDate,
-      // filmId,
       roomId,
       orderDate,
       available
@@ -278,9 +200,6 @@ export class ShowtimesService extends CommonService<Showtime> {
       skip: (page - 1) * limit,
       limit: limit
     };
-    // conditions = { ...conditions };
-    // if (filmId) conditions = { ...conditions, filmId };
-    // if (roomId) conditions = { ...conditions, roomId };
     if (available) conditions = { ...conditions, available };
     if (startDate) {
       const filterTime = [
@@ -327,7 +246,7 @@ export class ShowtimesService extends CommonService<Showtime> {
     }
     const [total, items] = await Promise.all([
       this.showtimeModel.countDocuments(conditions),
-      this.showtimeModel.find(conditions, null, options).sort(sort).select("-seats")
+      this.showtimeModel.find(conditions, null, options).sort(sort as any).select("-seats")
     ]);
     return { items, total };
   }
@@ -346,7 +265,7 @@ export class ShowtimesService extends CommonService<Showtime> {
     const result = await this.showtimeModel.find(filter)
       .skip(offset)
       .limit(defaultLimit)
-      .sort(sort)
+      .sort(sort as any) // Cast 'sort' to 'any' to bypass the type checking
       .populate(population)
       .exec();
 
@@ -360,4 +279,12 @@ export class ShowtimesService extends CommonService<Showtime> {
       result //kết quả query
     }
   }
+  
+  async findShowtimesByFilmAndRoom(filmId: string, roomId: string): Promise<any> {
+    // Find showtimes that match the filmId and roomId
+    const showtimes = await this.showtimeModel.find({ filmId, roomId });
+  
+    return showtimes;
+  }
+ 
 }

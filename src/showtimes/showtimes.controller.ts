@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Res, Put } from '@nestjs/common';
 import { ShowtimesService } from './showtimes.service';
-import { CreateShowtimeDto, ShowtimeOptionsDto } from './dto/showtime.dto';
+import { CreateShowtimeDto, ShowtimeOptionsDto, UpdateShowtimeDto } from './dto/showtime.dto';
 import { Public, ResponseMessage, User } from 'src/decorator/customize';
 import { IUser } from 'src/users/users.interface';
 import mongoose from 'mongoose';
@@ -20,7 +20,7 @@ export class ShowtimesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateShowtimeDto: CreateShowtimeDto,
+  update(@Param('id') id: string, @Body() updateShowtimeDto: UpdateShowtimeDto,
     @User() user: IUser) {
     return this.showtimesService.update(id, updateShowtimeDto, user);
   }
@@ -94,6 +94,12 @@ export class ShowtimesController {
   @Get('roomId/:roomId')
   findAllByCinemaId(@Param('roomId') roomId: string) {
     return this.showtimesService.findByRoomId(roomId);
+  }
+
+  @Get('/findbyids')
+  @Public()
+  findByIds(@Query('filmId') filmId: string, @Query('roomId') roomId: string) {
+    return this.showtimesService.findShowtimesByFilmAndRoom(filmId, roomId);
   }
 }
 
