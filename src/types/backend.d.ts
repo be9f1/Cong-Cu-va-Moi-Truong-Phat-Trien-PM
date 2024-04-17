@@ -100,6 +100,7 @@ export interface IShowtime {
     seats?: {
         _id: string;
         status: string;
+        price: number;
     }[];
     room?: {
         _id: string;

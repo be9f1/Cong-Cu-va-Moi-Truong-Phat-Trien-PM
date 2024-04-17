@@ -26,15 +26,16 @@ import { fetchAccount } from './redux/slice/accountSlide';
 import LayoutApp from './components/share/layout.app';
 import CinemaPage from './pages/admin/cinema';
 import ViewUpsertCinema from './components/admin/cinema/upsert.cinema';
-import ClientCinemaPage from './pages/film';
-import ClientCinemaDetailPage from './pages/cinema/detail';
-import ClientFilmPage from './pages/film';
-import ClientFilmDetailPage from './pages/film/detail';
-import ViewUpsertRoom from './components/admin/room/upsert.room';
-import RoomPage from './pages/admin/room';
+import ClientCinemaDetailPage from "./pages/cinema/detail";
+import ClientFilmDetailPage from "./pages/film/detail";
+import ViewUpsertRoom from "./components/admin/room/upsert.room";
+import RoomPage from "./pages/admin/room";
 import ShowtimePage from "./pages/admin/showtime";
 import ViewUpsertShowtime from "./components/admin/showtimes/upsert.showtime";
 import ClientShowtimeDetailPage from "./pages/showtime/detail";
+import ClientFilmPage from "./pages/film";
+import ClientCinemaPage from "./pages/cinema";
+import ClientShowtimePage from "./pages/showtime";
 
 const LayoutClient = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -86,6 +87,7 @@ export default function App() {
         { path: "cinema/:id", element: <ClientCinemaDetailPage /> },
         { path: "film", element: <ClientFilmPage /> },
         { path: "film/:id", element: <ClientFilmDetailPage /> },
+        { path: "showtime", element: <ClientShowtimePage /> },
         { path: "showtime/:id", element: <ClientShowtimeDetailPage /> },
       ],
     },
